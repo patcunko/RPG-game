@@ -1,12 +1,16 @@
-encounter = {(1, 0): 0, (1, 0): 0, (1, 1): 3, (1, 2): 0, (1, 3): 2, (1, 0): 0,
+# All possible player locations
+encounter = {(1, 0): 0, (2, 0): 2, (1, 1): 1, (1, 2): 0, (1, 3): 2, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
-             (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (2, 0): 0, (1, 0): 0,
+             (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (0, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0}
+
 over = False
 valid = False
+
+# Class containing players stats and equipment
 
 
 class Player:
@@ -19,6 +23,8 @@ class Player:
     if weapon == 'Dagger':
         damage = 5
 
+# Class containing purchasable items
+
 
 class Shop:
     item_1 = 'Dagger'
@@ -27,6 +33,8 @@ class Shop:
     item_2_cost = 20
     item_1_damage = 5
     item_2_damage = 10
+
+# Function that checks for valid response then checks players gold and gives them a response accordingly
 
 
 def new_weapon():
@@ -63,6 +71,8 @@ def new_weapon():
             Player.location[1] = Player.previous_location[1]
             valid_selection = True
 
+# Class for enemies and enemy stats containing a method for fighting when encountered by player
+
 
 class Enemy:
     def __init__(self, name='', health=0, damage=0, enemy_location=None, worth=0):
@@ -94,6 +104,8 @@ class Enemy:
 
 Ogre = Enemy('Ogre', 5, 2, [1, 3], 10)
 
+# Function for a player move
+
 
 def walk(picked_direction):
     global valid
@@ -119,6 +131,8 @@ def walk(picked_direction):
         Player.location[0] -= 1
         valid = True
 
+# start of game function
+
 
 def play():
     global valid_choice
@@ -128,10 +142,12 @@ def play():
 
 valid_choice = False
 
+# Starts game and checks for valid responses then moves player accordingly
 while not over or not valid:
     direction = input('F for Forward, R for Right, L for Left or B for Back?')
     play()
 
+# Conditionals for different events depending on player location
     if encounter[Player.location[0], Player.location[1]] == 2:
         while not valid_choice:
             choice = input('You encountered an Ogre, select A for Attack or R for Run')
@@ -152,3 +168,8 @@ while not over or not valid:
                 valid_choice = True
             elif choice == 'N':
                 valid_choice = True
+
+    if encounter[Player.location[0], Player.location[1]] == 1:
+        Player.location[0] = Player.previous_location[0]
+        Player.location[1] = Player.previous_location[1]
+        print("There is a wall, pick another direction")
