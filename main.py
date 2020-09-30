@@ -1,4 +1,6 @@
 # All possible player locations
+from ItemShop import ItemShop
+
 encounter = {(1, 0): 0, (2, 0): 2, (1, 1): 1, (1, 2): 0, (1, 3): 2, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
@@ -26,29 +28,9 @@ class Player:
         damage = 5
 
 
-# Class containing purchasable items
-
-
-class Item:
-    def __init__(self, name, cost, damage):
-        self.name = name
-        self.cost = cost
-        self.damage = damage
-
-
-class ItemShop:
-    def __init__(self):
-        self.items = [Item('Dagger', 10, 5), Item('Long Sword', 20, 10)]
-
-    def sell(self, player, item):
-        if player.gold >= item.cost:
-            player.item = item
-            print('You have acquired ' + item.name)
-        else:
-            print("You don't have enough gold")
-
-
 Shop = ItemShop()
+
+
 # Function that checks for valid response then checks players gold and gives them a response accordingly
 
 
