@@ -1,4 +1,6 @@
 # All possible player locations
+from ItemShop import ItemShop
+
 encounter = {(1, 0): 0, (2, 0): 2, (1, 1): 1, (1, 2): 0, (1, 3): 2, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
              (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0, (1, 0): 0,
@@ -10,10 +12,12 @@ encounter = {(1, 0): 0, (2, 0): 2, (1, 1): 1, (1, 2): 0, (1, 3): 2, (1, 0): 0,
 over = False
 valid = False
 
+
 # Class containing players stats and equipment
 
 
 class Player:
+    item = None
     health = 10
     damage = 2
     location = [0, 0]
@@ -23,16 +27,9 @@ class Player:
     if weapon == 'Dagger':
         damage = 5
 
-# Class containing purchasable items
 
+Shop = ItemShop()
 
-class Shop:
-    item_1 = 'Dagger'
-    item_2 = 'Long Sword'
-    item_1_cost = 10
-    item_2_cost = 20
-    item_1_damage = 5
-    item_2_damage = 10
 
 # Function that checks for valid response then checks players gold and gives them a response accordingly
 
@@ -46,30 +43,21 @@ def new_weapon():
                           'Long Sword: 20 gold 10 Damage , '
                           'or B for back')
 
-        if selection == Shop.item_1 and Player.gold >= Shop.item_1_cost:
-            Player.weapon = Shop.item_1
-            Player.gold -= Shop.item_1_cost
-            Player.damage = Shop.item_1_damage
+        if selection == Shop.items[0].name:
+            Shop.sell(Player, Shop.items[0])
             valid_selection = True
-            print('You have acquired ' + Shop.item_1)
             encounter[Player.location[0], Player.location[1]] = 0
-        elif selection == Shop.item_1 and Player.gold < Shop.item_1_cost:
-            print("You don't have enough gold")
 
-        if selection == Shop.item_2 and Player.gold >= Shop.item_2_cost:
-            Player.weapon = Shop.item_2
-            Player.gold -= Shop.item_2_cost
-            Player.damage = Shop.item_2_damage
+        if selection == Shop.items[1].name:
+            Shop.sell(Player, Shop.items[1])
             valid_selection = True
-            print('You have acquired ' + Shop.item_2)
             encounter[Player.location[0], Player.location[1]] = 0
-        elif selection == Shop.item_2 and Player.gold < Shop.item_2_cost:
-            print("You don't have enough gold")
 
         if selection == 'B':
             Player.location[0] = Player.previous_location[0]
             Player.location[1] = Player.previous_location[1]
             valid_selection = True
+
 
 # Class for enemies and enemy stats containing a method for fighting when encountered by player
 
@@ -104,6 +92,7 @@ class Enemy:
 
 Ogre = Enemy('Ogre', 5, 2, [1, 3], 10)
 
+
 # Function for a player move
 
 
@@ -131,6 +120,7 @@ def walk(picked_direction):
         Player.location[0] -= 1
         valid = True
 
+
 # start of game function
 
 
@@ -147,7 +137,7 @@ while not over or not valid:
     direction = input('F for Forward, R for Right, L for Left or B for Back?')
     play()
 
-# Conditionals for different events depending on player location
+    # Conditionals for different events depending on player location
     if encounter[Player.location[0], Player.location[1]] == 2:
         while not valid_choice:
             choice = input('You encountered an Ogre, select A for Attack or R for Run')
